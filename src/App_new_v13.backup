@@ -27,18 +27,12 @@ async loadBlockchainData(){
     this.setState( { contract })
     let myCandidateList = await  contract.methods.getCandidateList().call();  
     console.log(myCandidateList);   
-//const number = await contract.methods.totalVotesFor('Johnny').call(console.log)
-  //  console.log("Johnny number: ", number)    
-    var count = await this.state.contract.methods.totalVotesFor('Johnny').call(console.log);
-    
-        this.setState( { Johnny: parseInt(count) } )
+const number = await contract.methods.totalVotesFor('Johnny').call(console.log)
+    console.log("Johnny number: ", number)    
 
-
-	count = await this.state.contract.methods.totalVotesFor('Amber').call(console.log);
-
-        this.setState( { Amber : parseInt(count) } )
 
 }
+
     constructor(props){
         super(props)
         console.log("constructor")
@@ -47,13 +41,16 @@ async loadBlockchainData(){
             loading: true,
             message: ''
         }
+   //  this.junk  = this.junk.bind(this) 
      this.voting = this.voting.bind(this)
 
     }
-    voting = async (name) =>  {
-        this.state.contract.methods.voteForCandidate(name).send({gas: 140000, from: this.state.account });
-        var count = await this.state.contract.methods.totalVotesFor(name).call(console.log);
-        this.setState( { [name]: parseInt(count) } )
+    voting = async (greeting) =>  {
+        this.state.contract.methods.voteForCandidate(greeting).send({gas: 140000, from: this.state.account });
+        console.log("voteForCandidate")
+        var count = await this.state.contract.methods.totalVotesFor(greeting).call(console.log);
+        console.log('take a look at this !!!!!!!', count)
+        this.setState( { [greeting]: parseInt(count) } )
  }
 
 
@@ -61,14 +58,28 @@ render(){
 
         return (
                 <div>
-                <div>
-                 <button onClick={() => this.voting("Johnny")}>Johnny vote</button>
-                 <button onClick={() => this.voting("Amber")}>Amber vote</button>
+                <h5>message output: {this.state.message}</h5>
+                <h4> {"Get/Set Contract interaction"} </h4>
+                        <form onSubmit={this.setHandler}>
+                                <input id="setText" type="text"/>
+                                <button type={"submit"}> Update Contract </button>
+                        </form>
+                        <div>
+                        <button onClick={this.getCurrentVal} style={{marginTop: '5em'}}> Get Current Contract Value </button>
+ <button onClick={() => this.voting("Amber")}>Send 'crunkers Hello'</button>
+
+ <button onClick={() => this.voting("Johnny")}>Send 'Johnny Hello'</button>
+
+
 
 		</div>
+                
 
-                <h5>Johnny count: {this.state.Johnny}</h5>
+
+   <h5>Johnny count: {this.state.Johnny}</h5>
                 <h5>Amber count: {this.state.Amber}</h5>
+
+
 
 		</div>
         );

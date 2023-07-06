@@ -27,18 +27,12 @@ async loadBlockchainData(){
     this.setState( { contract })
     let myCandidateList = await  contract.methods.getCandidateList().call();  
     console.log(myCandidateList);   
-//const number = await contract.methods.totalVotesFor('Johnny').call(console.log)
-  //  console.log("Johnny number: ", number)    
-    var count = await this.state.contract.methods.totalVotesFor('Johnny').call(console.log);
-    
-        this.setState( { Johnny: parseInt(count) } )
+const number = await contract.methods.totalVotesFor('Johnny').call(console.log)
+    console.log("Johnny number: ", number)    
 
-
-	count = await this.state.contract.methods.totalVotesFor('Amber').call(console.log);
-
-        this.setState( { Amber : parseInt(count) } )
 
 }
+
     constructor(props){
         super(props)
         console.log("constructor")
@@ -47,30 +41,36 @@ async loadBlockchainData(){
             loading: true,
             message: ''
         }
-     this.voting = this.voting.bind(this)
+     }
 
-    }
-    voting = async (name) =>  {
-        this.state.contract.methods.voteForCandidate(name).send({gas: 140000, from: this.state.account });
-        var count = await this.state.contract.methods.totalVotesFor(name).call(console.log);
-        this.setState( { [name]: parseInt(count) } )
- }
+    setHandler = (event) => {
+          event.preventDefault();
+          console.log('sending ' + event.target.setText.value + ' to the contract');
+          this.state.contract.methods.voteForCandidate('Johnny').send({ gas: 3000000, from: this.state.account });
+     }
+
+  //  getCurrentVal = async () => {
+  //        let val = await this.state.contract.methods.getInteger("one").call(console.log);
+  //        console.log("val", val)
+  //        this.setState( { message : val.toString() })
+  //  }
+
 
 
 render(){
 
         return (
                 <div>
-                <div>
-                 <button onClick={() => this.voting("Johnny")}>Johnny vote</button>
-                 <button onClick={() => this.voting("Amber")}>Amber vote</button>
-
-		</div>
-
-                <h5>Johnny count: {this.state.Johnny}</h5>
-                <h5>Amber count: {this.state.Amber}</h5>
-
-		</div>
+                <h5>message output: {this.state.message}</h5>
+                <h4> {"Get/Set Contract interaction"} </h4>
+                        <form onSubmit={this.setHandler}>
+                                <input id="setText" type="text"/>
+                                <button type={"submit"}> Update Contract </button>
+                        </form>
+                        <div>
+                        <button onClick={this.getCurrentVal} style={{marginTop: '5em'}}> Get Current Contract Value </button>
+                        </div>
+                </div>
         );
 }
 }
