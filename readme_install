@@ -1,0 +1,28 @@
+sudo apt-get update
+# unlike windows I could not successfully use a later version of node
+curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh
+sudo bash nodesource_setup.sh
+sudo apt install nodejs build-essential
+npm install web3
+npm install --save-dev @nomiclabs/hardhat-ethers ethers @nomiclabs/hardhat-waffle ethereum-waffle chai
+npx create-react-app hello
+cd hello
+npx hardhat
+
+# double check dns
+vi hardhat.config.js
+
+vi contracts/Hello.sol
+
+# double check dns
+vi src/App.js
+
+vi scripts/deploy.js
+
+
+
+
+/home/ubuntu/hello   npx hardhat node --hostname ec2-35-86-73-162.us-west-2.compute.amazonaws.com
+/home/ubuntu/hello npx   hardhat run scripts/deploy.js --network localhost
+
+/home/ubuntu/hello npm start  
